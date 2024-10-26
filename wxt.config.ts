@@ -10,5 +10,10 @@ export default defineConfig({
       'tabs',
       'notifications'
     ],
+    // action: {
+    //   default_popup: 'src/popup/index.html'
+    // }
   },
+  srcDir: 'src',
+  
 });

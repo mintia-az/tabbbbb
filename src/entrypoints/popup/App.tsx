@@ -12,10 +12,12 @@ function App() {
 
   useEffect(() => {
     const loadTabs = async () => {
-      const result = await browser.storage.local.get('tabsToClose');
-      if (result.tabsToClose) {
-        setTabs(result.tabsToClose);
-      }
+      const allTabs = await browser.tabs.query({ currentWindow: true });
+      setTabs(allTabs.map((tab) => ({
+        id: tab.id?? 0,
+        title: tab.title?? '',
+        url: tab.url?? '',
+      })));
       setLoading(false);
     };
 
