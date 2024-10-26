@@ -1,12 +1,16 @@
+import { ThemeProvider } from '@/components/theme-provider';
+import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
+
 
 interface Tab {
   id: number;
   title: string;
   url: string;
+  favIconUrl: string;
 }
 
-function App() {
+const App = (): JSX.Element => {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -14,9 +18,10 @@ function App() {
     const loadTabs = async () => {
       const allTabs = await browser.tabs.query({ currentWindow: true });
       setTabs(allTabs.map((tab) => ({
-        id: tab.id?? 0,
-        title: tab.title?? '',
-        url: tab.url?? '',
+        id: tab.id ?? 0,
+        title: tab.title ?? '',
+        url: tab.url ?? '',
+        favIconUrl: tab.favIconUrl ?? ''
       })));
       setLoading(false);
     };
@@ -40,29 +45,44 @@ function App() {
   }
 
   return (
-    <div className="p-4 min-w-[300px]">
-      <h2 className="text-lg font-bold mb-4">閉じるタブを選択</h2>
-      {tabs.length === 0 ? (
-        <p>閉じる必要のあるタブはありません</p>
-      ) : (
-        <ul className="space-y-2">
-          {tabs.map((tab) => (
-            <li key={tab.id} className="flex items-center justify-between p-2 hover:bg-gray-100">
-              <div className="flex-1 mr-2">
-                <div className="font-medium truncate">{tab.title}</div>
-                <div className="text-sm text-gray-500 truncate">{tab.url}</div>
-              </div>
-              <button
-                onClick={() => handleCloseTab(tab.id)}
-                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-              >
-                閉じる
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <ThemeProvider>
+      <div className="p-4 w-80">
+        <div
+          className="flex justify-between"
+        >
+          <h2 className="text-lg font-bold flex items-center">Tabs</h2>
+          <ModeToggle></ModeToggle>
+        </div>
+        
+        
+        {tabs.length === 0 ? (
+          <p>閉じる必要のあるタブはありません</p>
+        ) : (
+          <ul className="space-y-2">
+            {tabs.map((tab) => (
+              <li key={tab.id} className="flex items-center justify-between p-2">
+                <img 
+                    src={tab.favIconUrl || '/default-favicon.png'} // デフォルトアイコンのパスを指定
+                    alt=""
+                    className="w-4 h-4"
+                  />
+                <div className="mr-4">
+                  <div className="">{tab.title}</div>
+                  <div className="">{tab.url}</div>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => handleCloseTab(tab.id)}
+                >
+                  閉じる
+                </Button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </ThemeProvider>
+
   );
 }
 
