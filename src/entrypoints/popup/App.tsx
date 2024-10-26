@@ -2,7 +2,6 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 
-
 interface Tab {
   id: number;
   title: string;
@@ -46,31 +45,31 @@ const App = (): JSX.Element => {
 
   return (
     <ThemeProvider>
-      <div className="p-4 w-80">
+      <div className="p-4 w-96">
         <div
-          className="flex justify-between"
+          className="flex justify-between mb-2"
         >
           <h2 className="text-lg font-bold flex items-center">Tabs</h2>
           <ModeToggle></ModeToggle>
         </div>
         
-        
         {tabs.length === 0 ? (
           <p>閉じる必要のあるタブはありません</p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-2 max-h-[400px] overflow-scroll">
             {tabs.map((tab) => (
               <li key={tab.id} className="flex items-center justify-between p-2">
                 <img 
                     src={tab.favIconUrl || '/default-favicon.png'} // デフォルトアイコンのパスを指定
                     alt=""
-                    className="w-4 h-4"
+                    className="w-4 h-4 mr-3"
                   />
-                <div className="mr-4">
-                  <div className="">{tab.title}</div>
-                  <div className="">{tab.url}</div>
+                <div className="w-3/5">
+                  <p className="truncate">{tab.title}</p>
+                  <p className="truncate">{tab.url}</p>
                 </div>
                 <Button
+                  className='ml-auto'
                   variant="outline"
                   onClick={() => handleCloseTab(tab.id)}
                 >
