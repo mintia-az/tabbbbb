@@ -5,7 +5,7 @@ export default defineContentScript({
     browser.runtime.sendMessage({
       type: 'PAGE_LOADED',
       url: window.location.href,
-      title: document.title
+      title: document.title,
     });
-  }
+  },
 });
